@@ -1,3 +1,4 @@
+package net.javaguides.springboot;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -11,9 +12,11 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://192.168.126.99:6868")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
-            }
+                        .allowedOrigins("http://192.168.126.99:6868", "http://192.168.126.99:8888","http://127.0.0.1:8888")
+			.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+			.allowedHeaders("*")
+			.allowCredentials(true);
+           }
         };
     }
 }
