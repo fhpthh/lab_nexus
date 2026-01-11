@@ -1,0 +1,43 @@
+version: '3.9'
+services:
+  db:
+    image: mysql:8.0
+    container_name: db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: crudapp
+      MYSQL_USER: crudapp
+      MYSQL_PASSWORD: crudapp
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    image: huepth/backend:v1
+    container_name: backend
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "8686:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/crudapp
+      SPRING_DATASOURCE_USERNAME: crudapp
+      SPRING_DATASOURCE_PASSWORD: crudapp
+      SERVER_ADDRESS: 0.0.0.0   
+  
+  frontend: 
+    image: huepth/frontend:v1 
+    container_name: frontend 
+    ports: 
+      - "80:80" 
+    depends_on: 
+      - backend
+      - db
+
+
